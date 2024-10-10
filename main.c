@@ -91,3 +91,29 @@ void UART5_Read(void){
              GPIO_PORTF_DATA_R &= ~0x02;     // Turn off red LED (error
 
         }
+    else
+        {
+            GPIO_PORTF_DATA_R &= ~0x08;  // Turn off green LED
+            GPIO_PORTF_DATA_R &= ~0x04;   // Turn off blue LED
+            GPIO_PORTF_DATA_R |= 0x02;     // Turn on red LED (error)
+
+        }
+    }
+
+
+
+    }
+}
+
+void UART5_send(void){
+
+    if (!(GPIO_PORTF_DATA_R & 0X01)) { // 0X01 pressed
+        UART5_Transmit(0xF0);
+        while (!(GPIO_PORTF_DATA_R & 0X01)); // Wait until released
+    }
+    if (!(GPIO_PORTF_DATA_R & 0X10)) { // 0X10 pressed
+        UART5_Transmit(0xAA);
+        while (!(GPIO_PORTF_DATA_R & 0X10)); // Wait until released
+    }
+}
+
