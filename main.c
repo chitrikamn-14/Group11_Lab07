@@ -20,3 +20,22 @@ void PortF_Initialisation(void){
     GPIO_PORTF_DATA_R = 0x00;               // Reset the data register (PF7-PF0 = 00000000)
 
 }
+
+void PORTE_Initialisation(void) {
+
+    // Enable the clock for UART5 and GPIO Port D
+
+    SYSCTL_RCGCGPIO_R |= SYSCTL_RCGC2_GPIOE;     // Enable GPIO Port D clock
+    SYSCTL_RCGCUART_R |= (1<<5);     // Enable UART5 clock
+    // while ((SYSCTL_PRGPIO_R & (1U << 3)) == 0) {} // Wait for Port D to be ready
+
+    // Configure PD6 (RX) and PD7 (TX)
+
+    GPIO_PORTE_LOCK_R = GPIO_LOCK_KEY;      // Unlock Port D
+    GPIO_PORTE_CR_R = 0xff;                 // Commit changes,1-enable (PD7-PD0 = 11000000)
+    GPIO_PORTE_DEN_R = 0x30;                // Digital enable PD6 and PD7
+    GPIO_PORTE_AFSEL_R = 0x30;              // Enable alternate function for PD6 and PD7
+    GPIO_PORTE_AMSEL_R = 0x00;              // Turnoff analog function
+    GPIO_PORTE_PCTL_R &= ~0x00FF0000;
+    GPIO_PORTE_PCTL_R |= 0x00110000;
+}
