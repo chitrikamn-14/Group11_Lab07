@@ -117,3 +117,19 @@ void UART5_send(void){
     }
 }
 
+void UART5_Transmit(uint8_t data) {
+    while (UART5_FR_R & UART_FR_TXFF);  // Wait until the transmit FIFO is not full
+    UART5_DR_R = data;                  // Transmit data
+}
+
+int main(void) {
+    PortF_Initialisation();
+    PORTE_Initialisation();
+    UART5_Initialisation();
+    //__asm("    cpsie i");                // Global interrupt enable
+
+    while (1) {
+
+        UART5_Read();
+    }
+}
