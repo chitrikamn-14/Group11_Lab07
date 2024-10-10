@@ -51,3 +51,13 @@ void UART5_Initialisation(void) {
     UART5_CTL_R = 0x301;                    // Enable UART
 
 }
+
+uint8_t UART5_ReceiveByte(void) {
+
+    while ((UART5_FR_R & 0x10) != 0) // Wait until RXFE is 0
+    {
+        UART5_send();
+    }
+    return UART5_DR_R; // Read data
+//return 0;
+}
